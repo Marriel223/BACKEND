@@ -1,14 +1,18 @@
-import * as StudentModel from "../models/StudentModel.js";
+import UserModel from "../models/UserModel.js";
 
-export const fetchBooks = async (req, res) =>{
-    try{
-        const books = await StudentModel.getBooks();
-        res.status(200).json(books);
-    }catch(e){
-        console.log(e);
-        res.status(500).json({
-            success: false,
-            message: "Internal Server Error"
-        })
-    }
-}
+export const register = async (req, res) => {
+  const { email, password } = req.body;
+
+  try {
+    const user = await UserModel.createUser(email, password);
+    res.status(201).json({ 
+      success: true, 
+      message: [{result: "A new user has been created!" }]
+      });
+
+  } catch (error) {
+    console.error(error);
+    res.status(400).json({ success: false, message: error.message });
+  }
+};
+
